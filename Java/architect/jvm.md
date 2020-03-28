@@ -15,6 +15,56 @@
 
 ## Part 02  class文件结构
 
+- Magic Number
+
+  CAFE BABE
+
+- Minor Version
+
+  Java的小版本号
+
+- Major Version
+
+  Java的大版本号
+
+- constant_pool_count
+
+  常量池大小
+
+- constant_pool
+
+  数量为constant_pool_count - 1的表
+
+- access_flags
+
+  - 修饰符
+
+    public / final / super / interface / abstract / annotation / enum / synthetic(编译器自动生成，非用户代码产生)
+
+- this_class
+
+  指向常量池的内容
+
+- super_class
+
+  指向常量池的内容
+
+- interfaces_count
+
+- interfaces
+
+- fields_count
+
+- fields
+
+- methods_count
+
+- methods
+
+- attributes_count
+
+- attributes
+
 ## Part 03  内存加载过程
 
 1. loading
@@ -287,7 +337,7 @@ X86：lock指令 compare and exchange
 >  3. GC信息（分代的年龄） 4bits
 >     
 >1. 为什么GC年龄默认为15?		最大为15
->     
+>    
 >4. 对象怎么定位？
 >
 >  1. 句柄池
