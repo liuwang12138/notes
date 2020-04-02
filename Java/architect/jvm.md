@@ -586,3 +586,44 @@ RSet与赋值效率问题
 - 由于RSet的存在，那么每次给对象赋引用的时候，就得做一些额外的操作
 - 指的是在RSet中做一些额外的记录(在GC中被称为写屏障)
 - 这个**<font color="red">写屏障</font>**不等于**内存屏障**
+
+
+
+## GC与调优
+
+Target：熟悉GC常用算法，熟悉常见的垃圾收集器，具有实际JVM调优实战经验
+
+### 基础知识
+
+> what is garbage?
+>
+> 没有任何引用指向的对象
+>
+> how to find garbage?
+>
+> 1. reference count：can't resolve：循环引用
+>
+> 2. root searching：
+>
+>    which instances are roots?
+>
+>    ​	jvm stack,
+>
+>    ​	native
+>
+>    ​	method stack,
+>
+>    ​	run-time constant pool,
+>
+>    ​	static references in method area
+>
+>    ​	Clazz
+>
+>    线程栈变量，静态变量，常量池，JNI指针
+>
+> GC algorithm：
+>
+> 	1. 标记清除(Mark-Sweep)
+>  	2. 拷贝
+>  	3. 标记压缩
+
