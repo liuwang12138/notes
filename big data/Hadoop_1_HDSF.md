@@ -36,3 +36,38 @@
 - 支持追加数据
 
   > 不会造成泛洪操作，只需要在最后追加文件块即可
+
+## HDFS的架构设计
+
+- HDFS是一个主从（master/slaves）架构
+
+  > 主从：主从二人都是工作的，之间有通信有协作
+  >
+  > 主备：备用不处理业务，主挂了之后才会切换到备用机
+
+- 由一个NameNode和一个DataNode组成
+
+- 面向文件包括：文件数据(data)和文件元数据(metadata)
+
+  > metadata：文件的描述信息，如文件名、大小、位置等
+
+- NameNode负责存储和管理文件元数据，并维护了一个层次型的文件目录树
+- DataNode负责存储文件数据（block块），并提供block的读写
+- DataNode与NameNode维持心跳，并汇报自己持有的block信息
+- Client和NameNode交互文件元数据，和DataNode交互文件block数据
+
+![image-20200403173918376](upload/image-20200403173918376.png)
+
+### 角色功能
+
+#### NameNode
+
+- 完全基于内存存储文件元数据、目录结构、文件block的映射
+- 需要持久化方案保证数据的可靠性
+- 提供副本放置策略
+
+#### DataNode
+
+- 基于本地磁盘存储block（文件的形式）
+- 并保存block的校验和数据保证block的可靠性
+- 与NameNode保持心跳，汇报block列表状态

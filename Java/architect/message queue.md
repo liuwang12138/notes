@@ -1,6 +1,2 @@
 # Message Queue
-
 ## Active MQ
-
-***
-
