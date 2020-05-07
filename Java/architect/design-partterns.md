@@ -1,6 +1,6 @@
 ## 设计模式
 
-### 单例模式 - Singleton
+### 01_单例模式 - Singleton
 
 ```java
 /**
@@ -68,7 +68,7 @@ public class Singleton_05 {
 
 ```
 
-### 策略模式 - Strategy
+### 02_策略模式 - Strategy
 
 - Comparator
 - Comparable
@@ -76,3 +76,75 @@ public class Singleton_05 {
 一个接口，多个实现类
 
 ![image-20200506171526316](upload/image-20200506171526316.png)
+
+### 工厂模式 - Factory
+
+#### 简单工厂(不算一个单独的设计模式)
+
+```
+public class SimpleVircleFactory {
+	public Car createCar() {
+		// process before createCar
+		return new Car();
+	}
+	public Plane createPlane() {
+		// process before createCar
+		return new Plane();
+	}
+}
+```
+
+- 可扩展性并不好
+
+#### 03_抽象工厂 - AbstractFactory
+
+- 产品族维度容易扩展
+
+```
+Abstract产品A			A1, A2, A3, ...
+Abstract产品B			B1, B2, B3, ...
+Abstract产品C			C1, C2, C3, ...
+
+AbstractFactory		fac1, 		fac2, 		fac3, ...
+createA();			return A1;	return A2;	return A3;
+createB();			return B1;	return B2;	return B3;
+createC();			return C1;	return C2;	return C3;
+```
+
+#### 04_工厂方法 - FactoryMethod
+
+- 产品维度容易扩展
+- 其实就是特殊的抽象工厂
+
+```
+AbstractProduct		p1, 		p2, 		p3, ...
+AbstractFactory		f1, 		f2, 		f3, ...
+createP()			return p1;	return p2;	return p3;
+```
+
+### 05_门面 - Facade
+
+![image-20200507115245258](upload/image-20200507115245258.png)
+
+### 06_调停者 - Mediator
+
+![image-20200507115302668](upload/image-20200507115302668.png)
+
+- 消息中间件：MQ			解耦
+
+### 07_装饰器 - Decorator
+
+- 允许向一个现有的对象添加新的功能，同时又不改变其结构
+- 用聚合代替继承
+
+![image-20200507134358663](upload/image-20200507134358663.png)
+
+`new HeyDecorator(new HaDecorator(new ConcreteComponent())).print()`
+
+### 08_责任链 - Chain Of Responsibility
+
+![image-20200507161916194](upload/image-20200507161916194.png)
+
+### 09_观察者 -Observer
+
+- 事件处理模型

@@ -2,7 +2,11 @@
 
 ## Part 01  基础概念
 
----
+> 进程与线程的区别：
+>
+> QQ.exe是一个进程
+>
+> **线程是进程中的一个最小执行单元**
 
 ### 创建线程的方式
 
@@ -10,22 +14,22 @@
 - implements Runnable
 - Thread Pool
 
-Callable - 一般配合线程池来使用
+>  Callable - 一般配合线程池来使用
 
 ### 线程的常用方法
 
-- static void sleep(long millionSeconds) ;
-- static void yield();     进入等待队列
-- void join();    将另一个线程加入到当前线程，常用于等待另一个线程的结束
+- `static void sleep(long millionSeconds) ;`
+- `static void yield(); `    进入等待队列
+- `void join();`    将另一个线程加入到当前线程，常用于等待另一个线程的结束
 
-
-
-- notify 不释放锁
-- wait释放锁
+> Attention
+>
+> - notify 	不释放锁
+> - wait        释放锁
 
 ### 线程状态
 
-![image-20200103175133584](concurrent.assets/image-20200103175133584.png)
+![image-20200507173730308](upload/image-20200507173730308.png)
 
 ```java
 /**
@@ -40,8 +44,6 @@ Callable - 一般配合线程池来使用
  *      6. Terminated       Completed
  */
 ```
-
-
 
 ### synchronized
 
