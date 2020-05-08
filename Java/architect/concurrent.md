@@ -1,4 +1,4 @@
-# Concurrent
+# 																																																																																																																					Concurrent
 
 ## Part 01  基础概念
 
@@ -63,7 +63,7 @@
   }
   ```
 
-- hospot实现：在对象头的64位中拿出两位，代表对象是否被锁定，以及锁的类型。
+- hotspot实现：在对象头的64位中拿出两位，代表对象是否被锁定，以及锁的类型。
 
 - synchronized 修饰静态方法：锁定class对象
 
@@ -80,13 +80,13 @@
   也就是说，synchronized获得的锁是可重入的
 
   - 子类调用父类的同步方法也是同样可以的
-  - 如果不可重入，子类重写方法：super(); 会死锁
+  - 如果不可重入，子类重写方法：`super.m(); `会死锁
 
 - 程序在执行过程中，如果出现异常，默认情况锁会被释放。所以在并发处理的过程中，有异常要多加小心，不然可能会发生不一致的情况。
 
   比如：在一个web app处理过程中，多个servlet线程共同访问同一个资源，这时如果异常处理不合适，在第一个线程中抛出异常，其他线程就会进入同步代码中，有可能会访问到异常产时的数据。因此，要非常小心地处理同步业务逻辑中的异常
 
-- synchronized不能锁定String常量(常量池)，Integer，Long(内部的特殊处理。数值修改时会产生新对象)
+- synchronized不能锁定String常量(常量池)，Integer，Long(Integer和Long内部的特殊处理。数值修改时会产生新对象)
 
 - synchronized的优化
 
@@ -101,13 +101,12 @@ synchronized的底层实现
 - 改进：锁升级的概念(hotspot)
 
   - synchronized(Object) 对象头(markword)记录这个线程id（偏向锁）
-
-  - 如果有线程争用，升级为自旋锁（默认旋10次）(while(true)，占用CPU，但不访问操作系统)
-
+- 如果有线程争用，升级为自旋锁（默认旋10次）(while(true)，占用CPU，但不访问操作系统)
   - 自旋10次以后，升级为重量级锁  ->  OS
+- 加锁代码：执行时间短，线程数少，用自旋锁
+  		                                   执行时间长，线程数多，用系统锁
 
-  - 加锁代码：执行时间短，线程数少，用自旋锁
-			                    执行时间长，线程数多，用系统锁
+> 自旋锁占用CPU，synchronized在等待队列里，不占用CPU时间
 
 ### volatile
 
@@ -119,13 +118,13 @@ synchronized的底层实现
 
   **volatile并不能保证多个线程共同修改变量所带来的不一致问题，也就是说，volatile不能替代synchronized**
 
+  本质上是使用了MESI，即CPU的缓存一致性协议
+
   ![img](concurrent.assets/clipboard.png)
 
 - **禁止指令重排序**
 
   - DCL单例
-  - Double Check Lock
-  - Mgr06.java
   
 
 #### new对象的步骤
@@ -142,7 +141,7 @@ synchronized的底层实现
 
 #### AtomicInteger - CAS操作
 
-incrementAndGet();				->  		线程安全的count++
+`incrementAndGet();				->  		线程安全的count++`
 
 #### CAS
 
@@ -176,9 +175,8 @@ LongAdder  ->  分段锁   cas  >   Atomic    低并发没有优势
 
 <img src="concurrent.assets/clipboard-1577785370019.png" alt="img" style="zoom:67%;" />
 
-## Part 02  JUC同步工具
+## Part 02  JUC同步工具																			
 
-<hr>
 
 ### 常用的其他锁
 
