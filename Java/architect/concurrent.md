@@ -158,6 +158,7 @@ synchronized的底层实现
 ```
 
 - CPU原语支持
+- 就是乐观锁
 
 #### ABA问题
 
@@ -175,8 +176,9 @@ LongAdder  ->  分段锁   cas  >   Atomic    低并发没有优势
 
 <img src="concurrent.assets/clipboard-1577785370019.png" alt="img" style="zoom:67%;" />
 
-## Part 02  JUC同步工具																			
 
+
+## Part 02  JUC同步工具
 
 ### 常用的其他锁
 
@@ -329,7 +331,6 @@ LongAdder  ->  分段锁   cas  >   Atomic    低并发没有优势
 
 ## Part 03  同步容器
 
-<hr>
 
 ### 容器总览
 
@@ -433,7 +434,6 @@ Queue添加了很多对线程友好的API
 
 ## Part04  线程池
 
-<hr>
 
 ### 几个基础接口
 
@@ -464,9 +464,9 @@ Queue添加了很多对线程友好的API
 - 对各种任务的管理类
 - 管理多个Future
 - 链式的处理方式
-- static supplyAsync(Supplier<U> supplier)      执行一个异步任务
-- allOf(CompletableFuture... cfs)<font color="blue">.join()</font>     所有任务执行完再继续执行
-- anyOf(CompletableFuture... cfs)<font color="blue">.join()</font>    一个任务执行完就往下执行
+- `static supplyAsync(Supplier<U> supplier)`    执行一个异步任务
+- `allOf(CompletableFuture... cfs).join() `    所有任务执行完再继续执行
+- `anyOf(CompletableFuture... cfs).join()`    一个任务执行完就往下执行
 
 ### 线程池
 
@@ -620,7 +620,6 @@ Queue添加了很多对线程友好的API
 
 ## Part05  JMH与Disruptor
 
-<hr>
 
 ### JMH
 
