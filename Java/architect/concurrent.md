@@ -269,11 +269,23 @@ LongAdder  ->  分段锁   cas  >   Atomic    低并发没有优势
 - 实质上是一个新的等待队列
 - 用consumer条件await的进入consumer等待队列；用producer条件signal唤醒producer队列的线程
 
+> object.wait()必须在synchronized里面
+>
+> condition.await()必须在lock.lock()里面
+
 ### AQS
 
 - AbstractQueuedSynchronizer
 
 ![image-20200103103504500](concurrent.assets/image-20200103103504500.png)
+
+```java
+private volatile int state;
+// AQS的核心，根据子类的不同实现有不同的意义，ReentrantLock表示锁的状态，CountDownLatch表示count
+class Node {
+    Thread thread;
+}
+```
 
 #### 模板方法 / 钩子函数
 
@@ -293,7 +305,7 @@ LongAdder  ->  分段锁   cas  >   Atomic    低并发没有优势
 #### 源码
 
 - set
-  - Thread.currentThread.map(ThreadLocal, person)
+  - Thread.currentThread().map(ThreadLocal, person)
   - 设到了当前线程的map
 
 ### Java的四种引用 - 强软弱虚
@@ -306,13 +318,15 @@ LongAdder  ->  分段锁   cas  >   Atomic    低并发没有优势
 
 #### 软引用
 
+- `SoftReference<byte[]> m = new SoftReference<>(new byte[1024* 1024])`
 - 只有系统内存不够用的时候，才会回收它
+- 一般用作缓存
 
 #### 弱引用
 
 - 只要遇到垃圾回收，就会被回收
 - 一般用在容器里
-- 一个对象，A通过强引用指向，B通过弱引用指向，若A不再指向该对象，经历过GC后，B也将为空
+- 一个对象，A通过强引用指向B，B通过弱引用指向C，若A不再指向B，经历过GC后，C也将被回收
 - 典型应用：ThreadLocal 
 
 ![image-20200103115825263](concurrent.assets/image-20200103115825263.png)
@@ -324,8 +338,9 @@ LongAdder  ->  分段锁   cas  >   Atomic    低并发没有优势
 
 #### 虚引用
 
-- PhantomReference<M> m = new PhantomReference(new M(), QUEUE)
+- `PhantomReference<M> m = new PhantomReference(new M(), QUEUE)`
 - 遇到垃圾回收，就会被回收
+- 虚引用get值是get不到的
 - 被回收时，对象会被放进队列里（即发送通知）
 - 虚拟机管理堆外内存使用。监测QUEUE，收到通知时回收堆外内存。
 
