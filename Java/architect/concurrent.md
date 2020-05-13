@@ -355,23 +355,22 @@ class Node {
 
 - Vector和HashTable是最初代的容器，二者中所有的方法都是加锁的，基本不用。
 - HashMap中所有的方法均不加锁
-- Collections.synchronizedMap(new HashMap<>())
-- ConcurrentHashMap
+- `Collections.synchronizedMap(new HashMap<>())`
 - ConcurrentHashMap的主要优势主要集中在读上，写入没有优势(synchronized比较快)
 
-#### Queue和List的区别
-
-Queue添加了很多对线程友好的API
-
-- offer()
-- poll()
-- peek()
-- put()     (BlockingQueue特有)
-- take()   (BlockingQueue特有)
+> Queue和List的区别：
+>
+> Queue添加了很多对线程友好的API
+>
+> - boolean offer();				// add
+> - E poll();                              // Retrieves and remove
+> - E peek();                            // Retrieves but not remove
+> - void put();                         // BlockingQueue特有，如果满了就会阻塞
+> - E take();                             // BlockingQueue特有，如果空了就会阻塞
+>
 
 ### 常用的高并发容器
 
-<hr>
 
 #### ConcurrentHashMap
 
@@ -458,20 +457,21 @@ Queue添加了很多对线程友好的API
 
 #### Future
 
-- T get();            阻塞方法，拿到后继续执行，没拿到，等待
+- 存储执行的将来才会产生的结果
+- `T get();            // 阻塞方法，拿到后继续执行，没拿到，等待`
 
 #### Executor
 
-- execute(@NotNull Runnable runnable)
+- `execute(@NotNull Runnable runnable)`
 
 #### ExecutorService
 
-- extends Executor
-- Future<T>  submit(Callable<T>)
+- `extends Executor`
+- `Future<T>  submit(Callable<T>)`
 
 #### FutureTask
 
-- implements RunnableFuture<V>
+- `implements RunnableFuture<V>`
 - 既是一个Future，也是一个Task。即运行完的结果存在自己本身
 
 #### CompletableFuture
@@ -488,7 +488,7 @@ Queue添加了很多对线程友好的API
 
 #### ThreadPoolExecutor
 
-- extends AbstractExecutorService
+- `extends AbstractExecutorService`
 - 维护着两个队列：线程队列 + 任务队列
 
 ![image-20200107142033424](concurrent.assets/image-20200107142033424.png)
@@ -540,13 +540,19 @@ Queue添加了很多对线程友好的API
   - AbortPolicy：抛异常
   - DiscardPolicy：默默丢弃
   - DiscardOldestPolicy：丢弃任务队列中已等待时间最长的任务
-  - CallerRunsPolicy：交付线程自己执行
+  - CallerRunsPolicy：交付线程自己执行（谁提交的谁自己运行）
 
-  一般时候，我们会执行自定义策略，一般会保存到Kafka, Redis,Database
+  一般时候，我们会执行自定义策略（需要继承策略的接口），一般会保存到Kafka, Redis,Database
 
 ##### 几种不同的线程池
 
 ###### SingleThreadPool
+
+```java
+new ThreadPoolExecutor(1, 1, 
+					   0L, TimeUnit.MILLISECONDS, 
+					   new LinkedBlockingQueue<Runnable>());
+```
 
 - 线程池里只有一个线程
 - 可以保证任务顺序执行
@@ -559,6 +565,11 @@ Queue添加了很多对线程友好的API
 
 ###### CachedThreadPool
 
+```java
+new ThreadPoolExecutor(0, Integer.MAX_VALUE, 60L, TimeUnit.SECONDS,
+					   new SynchronousQueue<Runnable>());
+```
+
 - 没有核心线程，最大线程数为Integer.MAX_VALUE
 - 任务队列使用SynchronousQueue
 - 来了新任务马上处理，没有空闲线程就新建线程
@@ -566,10 +577,26 @@ Queue添加了很多对线程友好的API
 
 ###### FixedThreadPool
 
+```java
+new ThreadPoolExecutor(nThreads,  			// 由传参指定
+                       nThreads,			// 由传参指定
+                       0L, TimeUnit.MILLISECONDS,
+                       new LinkedBlockingQueue<Runnable>());
+```
+
 - 线程数固定（核心线程数 = 最大线程数）
 - 底层LinkedBlockingQueue
 
 ###### ScheduledThreadPool
+
+```java
+new ThreadPoolExecutor(corePoolSize,		// 由传参指定
+					   Integer.MAX_VALUE,
+                       DEFAULT_KEEPALIVE_MILLIS, MILLISECONDS,
+                       new DelayedWorkQueue());
+```
+
+
 
 - 执行定时任务
 - 底层DelayedWorkQueue
@@ -606,15 +633,13 @@ Queue添加了很多对线程友好的API
 
 #### ForkJoinPool
 
-##### ForkJoinPool
-
 - 分解汇总的任务
 - 用很少的线程可以执行很多的任务（子任务），TPE做不到先执行子任务
 - CPU密集型
 - **每个线程都维护自己的一个任务队列**（与ThreadPoolExecutor的区别）
 - 执行的任务必须继承ForkJoinTask（一般不继承此类，一般继承下面两个抽象类）
-  - RecursiveAction extends ForkJoinTask<Void>
-  - RecursiveTask<T> extends ForkJoinTask<T>
+  - `RecursiveAction extends ForkJoinTask<Void>`
+  - `RecursiveTask<T> extends ForkJoinTask<T>`
 
 ![image-20200107142556412](concurrent.assets/image-20200107142556412.png)
 
@@ -625,7 +650,7 @@ Queue添加了很多对线程友好的API
 
 ![image-20200107141037391](concurrent.assets/image-20200107141037391.png)
 
-- WorkStealingPool产生的是精灵线程（守护线程，后台线程，Daemon Thread）	，主线程结束后，精灵线程在后台运行，看不到输出。需要主线程阻塞才可以看到输出
+- WorkStealingPool产生的是精灵线程（守护线程，后台线程，Daemon Thread），主线程结束后，精灵线程在后台运行，看不到输出。需要主线程阻塞才可以看到输出
 
 ##### parallelStream
 
