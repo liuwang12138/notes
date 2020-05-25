@@ -145,6 +145,43 @@ createP()			return p1;	return p2;	return p3;
 
 ![image-20200507161916194](upload/image-20200507161916194.png)
 
-### 09_观察者 -Observer
+### 09_观察者 - Observer
 
 - 事件处理模型
+
+![image-20200522114813363](upload/image-20200522114813363.png)
+
+### 10_组合模式 - Composite
+
+- 树形结构
+
+![组合模式](upload/image-20200522152517463.png)
+
+### 11_享元模式 - Flyweight
+
+![Flyweight](upload/image-20200522152730.png)
+
+- 共享元对象，防止new出过多对象
+- java里的String用的就是享元模式
+
+### 12_代理模式 - Proxy
+
+#### 12_01 静态代理
+
+![image-20200522161027846](upload/image-20200522161027846.png)
+
+#### 12_02 动态代理
+
+![dynamic proxy](upload/dynamic_proxy.png)
+
+反射：通过二进制字节码分析类的属性和方法
+
+```java
+Proxy.newProxyInstance(ClassLoader loaderm
+					   Class<?>[] interfaces,
+					   InvocationHandler h);
+```
+
+- loader：与被代理对象同一个ClassLoader
+- interfaces：生成的Proxy对象需要实现哪些接口
+- h：调用时的处理器，interface
