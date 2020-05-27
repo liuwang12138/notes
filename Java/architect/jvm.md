@@ -13,25 +13,41 @@
 
 ## Part 02  class文件结构
 
+- 二进制字节流
+- 数据类型：u1 u2 u4 u8和_info(表类型)
+- _info的来源是hotspot源码中的写法
+- 查看16进制格式的ClassFile
+  - sublime / notepad /
+  - IDEA插件 - BinEd
+- 有很多可以观察ByteCode的方法：
+  - javap
+  - JBE - 可以直接修改
+  - jClassLib - IDEA插件之一
+
+### Class文件结构
+
+![Class文件结构](upload/马士兵教育 java1.8类文件格式第一版.png)
+
 - Magic Number
 
-  CAFE BABE
+  - CAFE BABE
 
 - Minor Version
 
-  Java的小版本号
+  - Java的小版本号
 
 - Major Version
 
-  Java的大版本号
+  - Java的大版本号
 
 - constant_pool_count
 
-  常量池大小
+  - 常量池大小
 
 - constant_pool
 
-  数量为constant_pool_count - 1的表
+  - 数量为constant_pool_count - 1的表
+  - 下标从1开始，保留了0位置作为不指向任何常量
 
 - access_flags
 
@@ -41,11 +57,13 @@
 
 - this_class
 
-  指向常量池的内容
+  - 当前class
+  - 指向常量池的内容
 
 - super_class
 
-  指向常量池的内容
+  - 父类class
+  - 指向常量池的内容
 
 - interfaces_count
 
@@ -62,6 +80,8 @@
 - attributes_count
 
 - attributes
+
+![image-20200527150604960](upload/image-20200527150604960.png)
 
 ## Part 03  内存加载过程
 
@@ -129,7 +149,7 @@
 
 #### ClassLoader源码解析
 
-findInCache -> parent.loadClass() ->findClass()
+`findInCache -> parent.loadClass() ->findClass()`
 
 ![image-20200110145340448](jvm.assets/image-20200110145340448.png)
 
